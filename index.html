@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>gauravyt_ Panel</title>
+
+<style>
+/* --- GLOBAL 4K OPTIMIZATIONS --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f0f2f5 100%);
+  color: #111827;
+  /* Retina Display Smooth Text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- MAIN PANEL --- */
+.box {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 40px 32px;
+  border-radius: 28px;
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0,0,0,0.03);
+  animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+h2 {
+  margin-bottom: 28px;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.6px;
+  color: #0f172a;
+}
+
+/* --- INPUT FIELD --- */
+input {
+  width: 100%;
+  padding: 18px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input::placeholder { color: #94a3b8; font-weight: 400; }
+
+input:focus {
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* --- DYNAMIC BUTTON --- */
+button.login-btn {
+  width: 100%;
+  height: 56px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 16px;
+  background: #3b82f6;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 16px -4px rgba(59, 130, 246, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+button.login-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px -4px rgba(59, 130, 246, 0.5);
+}
+
+button.login-btn:active { transform: scale(0.97); }
+
+/* Button Inner Elements for Bug-Free State Changes */
+.btn-text, .btn-spinner, .btn-success {
+  position: absolute;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.btn-spinner, .btn-success {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.spinner-circle {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Button States */
+button.login-btn.loading {
+  cursor: not-allowed;
+  background: #60a5fa;
+  transform: scale(1);
+  box-shadow: none;
+}
+button.login-btn.loading .btn-text { opacity: 0; transform: translateY(-20px); }
+button.login-btn.loading .btn-spinner { opacity: 1; transform: translateY(0); }
+
+button.login-btn.success {
+  background: #10b981;
+  box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.4);
+}
+button.login-btn.success .btn-text, button.login-btn.success .btn-spinner { opacity: 0; transform: translateY(-20px); }
+button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); display: flex; align-items: center; gap: 8px; }
+
+/* --- ERROR TEXT --- */
+.error {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 16px;
+  font-weight: 500;
+  height: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.error.show { opacity: 1; }
+
+/* --- PROFESSIONAL ABOUT BUTTON --- */
+.about-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+.about-btn:hover { background: #e2e8f0; color: #0f172a; transform: rotate(15deg); }
+.about-btn svg { width: 18px; height: 18px; stroke: currentColor; }
+
+/* --- POPUPS --- */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.popup-overlay.active { display: flex; opacity: 1; }
+
+.popup-box {
+  background: #ffffff;
+  padding: 36px 28px;
+  border-radius: 28px;
+  width: 85%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: scale(0.95) translateY(20px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.popup-overlay.active .popup-box { transform: scale(1) translateY(0); }
+
+/* About Specifics */
+.profile-photo {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  margin-bottom: 16px;
+}
+
+.dev-name { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 8px; letter-spacing: -0.5px;}
+
+.insta-btn {
+  display: inline-block;
+  background: #fdf2f8;
+  color: #db2777;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: all 0.2s ease;
+}
+.insta-btn:hover { background: #fce7f3; transform: scale(1.05); }
+
+.info-row {
+  display: flex; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row span { color: #64748b; }
+.info-row b { color: #0f172a; font-weight: 600; }
+
+.close-btn {
+  background: #f1f5f9;
+  margin-top: 24px; padding: 16px;
+  border: none; border-radius: 16px;
+  color: #334155; width: 100%;
+  cursor: pointer; font-weight: 600; font-size: 15px;
+  transition: 0.2s;
+}
+.close-btn:hover { background: #e2e8f0; color: #0f172a; }
+
+/* Welcome Specifics */
+.welcome-box h3 { color: #0f172a; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.welcome-box p { font-size: 15px; color: #475569; margin-bottom: 28px; line-height: 1.6; }
+.welcome-box b { color: #0f172a; }
+
+.close-popup-btn {
+  width: 100%; background: #0f172a; color: #ffffff;
+  border: none; border-radius: 16px; padding: 16px;
+  cursor: pointer; font-weight: 600; font-size: 15px;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+}
+.close-popup-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(15, 23, 42, 0.3); }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <button class="about-btn" onclick="openPopup('aboutMenu')">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+  </button>
+
+  <h2>Panel Login</h2>
+  
+  <input type="text" id="key" placeholder="Enter Access Key" autocomplete="off">
+  
+  <button class="login-btn" id="loginBtn" onclick="login()">
+    <span class="btn-text">Authenticate</span>
+    <span class="btn-spinner"><div class="spinner-circle"></div></span>
+    <span class="btn-success">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      Success
+    </span>
+  </button>
+
+  <div class="error" id="error">Invalid Access Key</div>
+</div>
+
+<div class="popup-overlay" id="aboutMenu">
+  <div class="popup-box">
+    <img src="https://gauravyttt.carrd.co/assets/images/image03.jpg?v=ae641691" class="profile-photo" alt="Gaurav">
+    <h3 class="dev-name">Gaurav</h3>
+    <a class="insta-btn" href="https://instagram.com/gauravyt_" target="_blank">@gauravyt_</a>
+    
+    <div class="info-row"><span>Version</span><b>4K Pro Build</b></div>
+    <div class="info-row"><span>Developer</span><b>Gaurav</b></div>
+    <div class="info-row"><span>Status</span><b>Secure</b></div>
+    
+    <button class="close-btn" onclick="closePopup('aboutMenu')">Close</button>
+  </div>
+</div>
+
+<div class="popup-overlay" id="welcomePopup">
+  <div class="popup-box">
+    <h3>Welcome</h3>
+    <p>Welcome to the official <b>gauravyt_ app</b>. This is the real app by Gaurav, trusted by <b>60K+ Instagram followers</b>.</p>
+    <button class="close-popup-btn" onclick="closePopup('welcomePopup')">Continue</button>
+  </div>
+</div>
+
+<script>
+// --- POPUP MANAGEMENT ---
+function openPopup(id) {
+  const el = document.getElementById(id);
+  el.style.display = "flex";
+  // Small delay to allow display:flex to apply before adding opacity class for smooth animation
+  setTimeout(() => el.classList.add('active'), 10);
+}
+
+function closePopup(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('active');
+  // Wait for transition to finish before hiding
+  setTimeout(() => el.style.display = "none", 300);
+}
+
+// Show welcome on load
+window.onload = () => openPopup('welcomePopup');
+
+// --- ENTER KEY SUPPORT ---
+document.getElementById('key').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    login();
+  }
+});
+
+// --- CORE LOGIN LOGIC ---
+function login() {
+  const keyInput = document.getElementById("key");
+  const key = keyInput.value.trim();
+  const loginBtn = document.getElementById("loginBtn");
+  const errorText = document.getElementById("error");
+
+  // Prevent double clicks or empty submissions
+  if (loginBtn.classList.contains("loading") || key === "") return;
+
+  // Reset UI for new attempt
+  errorText.classList.remove("show");
+  loginBtn.classList.remove("success");
+  loginBtn.classList.add("loading");
+  loginBtn.disabled = true;
+
+  fetch("https://script.google.com/macros/s/AKfycbzBvcMQjvEYqG7ZOs-3qiJwNRVL6yKk1gQeu44T63QBUWh2WlacbUcf4wvEsCs_kEDt/exec?key=" + encodeURIComponent(key))
+  .then(res => res.text())
+  .then(data => {
+    if(data.trim() === "valid") {
+      // Flawless Success Transition
+      loginBtn.classList.remove("loading");
+      loginBtn.classList.add("success");
+      
+      setTimeout(() => {
+        window.location.href = "https://gauravytpanel.carrd.co/";
+      }, 1200);
+    } else {
+      // Revert securely on failure
+      resetButton(loginBtn, errorText, "Invalid Access Key");
+    }
+  })
+  .catch(err => {
+    resetButton(loginBtn, errorText, "Network connection error.");
+  });
+}
+
+function resetButton(btn, errorEl, msg) {
+  btn.classList.remove("loading");
+  btn.disabled = false;
+  errorEl.innerText = msg;
+  errorEl.classList.add("show");
+  
+  // Shake animation on error for premium feel
+  const box = document.querySelector('.box');
+  box.style.transform = "translateX(-10px)";
+  setTimeout(() => box.style.transform = "translateX(10px)", 100);
+  setTimeout(() => box.style.transform = "translateX(-10px)", 200);
+  setTimeout(() => box.style.transform = "translateX(0)", 300);
+}
+</script>
+
+</body>
+</html>
