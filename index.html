@@ -22,7 +22,6 @@ body {
   align-items: center;
   background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f0f2f5 100%);
   color: #111827;
-  /* Retina Display Smooth Text */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -109,7 +108,6 @@ button.login-btn:hover {
 
 button.login-btn:active { transform: scale(0.97); }
 
-/* Button Inner Elements for Bug-Free State Changes */
 .btn-text, .btn-spinner, .btn-success {
   position: absolute;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -132,7 +130,6 @@ button.login-btn:active { transform: scale(0.97); }
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
-/* Button States */
 button.login-btn.loading {
   cursor: not-allowed;
   background: #60a5fa;
@@ -270,12 +267,49 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
 }
 .close-popup-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(15, 23, 42, 0.3); }
+
+/* --- CONTENT CONTAINER & IFRAME --- */
+#content-container {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1000;
+  background: #ffffff;
+  display: none;
+}
+
+#appIframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+
+#floatingLogoutBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 28px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+  transition: all 0.3s ease;
+  display: none; /* Hidden by default */
+}
+
+#floatingLogoutBtn:hover {
+  background: #dc2626;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(239, 68, 68, 0.4);
+}
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="box" id="loginPanel">
   <button class="about-btn" onclick="openPopup('aboutMenu')">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="10"></circle>
@@ -322,19 +356,29 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   </div>
 </div>
 
+<div id="content-container">
+  </div>
+<button id="floatingLogoutBtn" onclick="logout()">Logout</button>
+
 <script>
+// State management variable
+let isPanelOpen = false;
+
+// Agar reload hone pe URL mein #panel ho, toh clean kardo
+if(window.location.hash === '#panel') {
+    history.replaceState(null, null, window.location.pathname);
+}
+
 // --- POPUP MANAGEMENT ---
 function openPopup(id) {
   const el = document.getElementById(id);
   el.style.display = "flex";
-  // Small delay to allow display:flex to apply before adding opacity class for smooth animation
   setTimeout(() => el.classList.add('active'), 10);
 }
 
 function closePopup(id) {
   const el = document.getElementById(id);
   el.classList.remove('active');
-  // Wait for transition to finish before hiding
   setTimeout(() => el.style.display = "none", 300);
 }
 
@@ -356,10 +400,8 @@ function login() {
   const loginBtn = document.getElementById("loginBtn");
   const errorText = document.getElementById("error");
 
-  // Prevent double clicks or empty submissions
   if (loginBtn.classList.contains("loading") || key === "") return;
 
-  // Reset UI for new attempt
   errorText.classList.remove("show");
   loginBtn.classList.remove("success");
   loginBtn.classList.add("loading");
@@ -369,15 +411,34 @@ function login() {
   .then(res => res.text())
   .then(data => {
     if(data.trim() === "valid") {
-      // Flawless Success Transition
       loginBtn.classList.remove("loading");
       loginBtn.classList.add("success");
       
       setTimeout(() => {
-        window.location.href = "https://gauravytpanel.carrd.co/";
+        // Hide Login Panel
+        document.getElementById("loginPanel").style.display = "none"; 
+        
+        // Show Container and dynamically create iframe
+        const container = document.getElementById("content-container");
+        container.style.display = "block"; 
+        
+        if (!document.getElementById("appIframe")) {
+            const iframe = document.createElement("iframe");
+            iframe.id = "appIframe";
+            iframe.src = "https://gauravytpanel.carrd.co/"; 
+            container.appendChild(iframe);
+        }
+        
+        // Show Logout Button
+        document.getElementById("floatingLogoutBtn").style.display = "block"; 
+        
+        // Set state for Back Button logic
+        isPanelOpen = true;
+        if(window.location.hash !== '#panel') {
+            history.pushState({ page: 'panel' }, 'Panel', '#panel');
+        }
       }, 1200);
     } else {
-      // Revert securely on failure
       resetButton(loginBtn, errorText, "Invalid Access Key");
     }
   })
@@ -392,13 +453,29 @@ function resetButton(btn, errorEl, msg) {
   errorEl.innerText = msg;
   errorEl.classList.add("show");
   
-  // Shake animation on error for premium feel
-  const box = document.querySelector('.box');
+  const box = document.getElementById('loginPanel');
   box.style.transform = "translateX(-10px)";
   setTimeout(() => box.style.transform = "translateX(10px)", 100);
   setTimeout(() => box.style.transform = "translateX(-10px)", 200);
   setTimeout(() => box.style.transform = "translateX(0)", 300);
 }
+
+// --- SECURE LOGOUT LOGIC ---
+function logout() {
+  isPanelOpen = false;
+  // Clean page reload to ensure no history/cache glitches remain
+  window.location.replace(window.location.pathname);
+}
+
+// --- DEVICE BACK BUTTON EVENT FIX ---
+window.addEventListener('popstate', function(event) {
+  if (isPanelOpen) {
+     // If user presses physical back button, safely log out instead of white screen
+     if (window.location.hash !== '#panel') {
+         logout(); 
+     }
+  }
+});
 </script>
 
 </body>
