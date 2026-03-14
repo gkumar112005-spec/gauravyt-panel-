@@ -6,7 +6,7 @@
 <title>gauravyt_ Panel</title>
 
 <style>
-/* --- GLOBAL 4K OPTIMIZATIONS --- */
+/* --- GLOBAL 4K OPTIMIZATIONS (DARK THEME) --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,82 +20,103 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f0f2f5 100%);
-  color: #111827;
+  background: radial-gradient(circle at top right, #1e293b, #020617); /* Sleek dark gradient */
+  color: #f8fafc;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* --- MAIN PANEL --- */
+/* --- MAIN PANEL (GLASSMORPHISM) --- */
 .box {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 40px 32px;
+  background: rgba(30, 41, 59, 0.65);
+  padding: 40px 28px;
   border-radius: 28px;
-  width: 90%;
-  max-width: 380px;
+  width: 85%;
+  max-width: 340px;
   text-align: center;
-  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0,0,0,0.03);
-  animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
 @keyframes slideUpFade {
-  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Panel Header Icon */
+.panel-icon {
+  background: rgba(59, 130, 246, 0.1);
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
 h2 {
-  margin-bottom: 28px;
+  margin-bottom: 4px;
   font-weight: 700;
-  font-size: 26px;
-  letter-spacing: -0.6px;
-  color: #0f172a;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+}
+
+.sub-text {
+  color: #94a3b8;
+  font-size: 14px;
+  margin-bottom: 28px;
+  font-weight: 500;
 }
 
 /* --- INPUT FIELD --- */
 input {
   width: 100%;
-  padding: 18px;
+  padding: 16px;
   border-radius: 16px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  color: #0f172a;
-  font-size: 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 15px;
   font-weight: 500;
   outline: none;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  transition: all 0.25s ease;
 }
 
-input::placeholder { color: #94a3b8; font-weight: 400; }
+input::placeholder { color: #64748b; font-weight: 400; }
 
 input:focus {
   border-color: #3b82f6;
-  background: #ffffff;
+  background: rgba(15, 23, 42, 0.9);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
 }
 
 /* --- DYNAMIC BUTTON --- */
 button.login-btn {
   width: 100%;
-  height: 56px;
-  margin-top: 24px;
+  height: 52px;
+  margin-top: 16px;
   border: none;
   border-radius: 16px;
   background: #3b82f6;
   color: white;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: -0.2px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 16px -4px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -103,7 +124,7 @@ button.login-btn {
 button.login-btn:hover {
   background: #2563eb;
   transform: translateY(-2px);
-  box-shadow: 0 12px 20px -4px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 12px 20px rgba(59, 130, 246, 0.4);
 }
 
 button.login-btn:active { transform: scale(0.97); }
@@ -120,8 +141,8 @@ button.login-btn:active { transform: scale(0.97); }
 }
 
 .spinner-circle {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-top: 3px solid #ffffff;
   border-radius: 50%;
@@ -132,27 +153,28 @@ button.login-btn:active { transform: scale(0.97); }
 
 button.login-btn.loading {
   cursor: not-allowed;
-  background: #60a5fa;
-  transform: scale(1);
+  background: #1e293b;
+  color: transparent;
   box-shadow: none;
+  border: 1px solid rgba(255,255,255,0.1);
 }
-button.login-btn.loading .btn-text { opacity: 0; transform: translateY(-20px); }
+button.login-btn.loading .btn-text { opacity: 0; }
 button.login-btn.loading .btn-spinner { opacity: 1; transform: translateY(0); }
 
 button.login-btn.success {
   background: #10b981;
-  box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
 }
 button.login-btn.success .btn-text, button.login-btn.success .btn-spinner { opacity: 0; transform: translateY(-20px); }
 button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); display: flex; align-items: center; gap: 8px; }
 
 /* --- ERROR TEXT --- */
 .error {
-  color: #ef4444;
-  font-size: 14px;
-  margin-top: 16px;
-  font-weight: 500;
-  height: 20px;
+  color: #f87171;
+  font-size: 13px;
+  margin-top: 12px;
+  font-weight: 600;
+  height: 18px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -161,22 +183,22 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
 /* --- PROFESSIONAL ABOUT BUTTON --- */
 .about-btn {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 16px;
+  right: 16px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #f1f5f9;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  color: #64748b;
+  color: #94a3b8;
 }
 
-.about-btn:hover { background: #e2e8f0; color: #0f172a; transform: rotate(15deg); }
+.about-btn:hover { background: rgba(255, 255, 255, 0.1); color: #ffffff; transform: rotate(15deg); }
 .about-btn svg { width: 18px; height: 18px; stroke: currentColor; }
 
 /* --- POPUPS --- */
@@ -184,9 +206,9 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   display: none;
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   justify-content: center;
   align-items: center;
   z-index: 9999;
@@ -197,15 +219,17 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
 .popup-overlay.active { display: flex; opacity: 1; }
 
 .popup-box {
-  background: #ffffff;
+  background: rgba(30, 41, 59, 0.85);
   padding: 36px 28px;
   border-radius: 28px;
   width: 85%;
   max-width: 340px;
   text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   transform: scale(0.95) translateY(20px);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
 }
 
 .popup-overlay.active .popup-box { transform: scale(1) translateY(0); }
@@ -215,16 +239,17 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   width: 90px; height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   margin-bottom: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.dev-name { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 8px; letter-spacing: -0.5px;}
+.dev-name { font-size: 24px; font-weight: 700; color: #ffffff; margin-bottom: 8px; letter-spacing: -0.5px;}
 
 .insta-btn {
   display: inline-block;
-  background: #fdf2f8;
-  color: #db2777;
+  background: rgba(219, 39, 119, 0.15);
+  color: #f472b6;
   padding: 10px 24px;
   border-radius: 20px;
   font-size: 14px;
@@ -232,48 +257,72 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   text-decoration: none;
   margin-bottom: 24px;
   transition: all 0.2s ease;
+  border: 1px solid rgba(219, 39, 119, 0.3);
 }
-.insta-btn:hover { background: #fce7f3; transform: scale(1.05); }
+.insta-btn:hover { background: rgba(219, 39, 119, 0.25); transform: scale(1.05); }
 
 .info-row {
   display: flex; justify-content: space-between;
-  padding: 12px 0; border-bottom: 1px solid #f1f5f9;
+  padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 14px;
 }
 .info-row:last-child { border-bottom: none; }
-.info-row span { color: #64748b; }
-.info-row b { color: #0f172a; font-weight: 600; }
+.info-row span { color: #94a3b8; }
+.info-row b { color: #f8fafc; font-weight: 600; }
+
+/* Hidden Admin Button */
+.admin-link-btn {
+  display: block;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.admin-link-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
 
 .close-btn {
-  background: #f1f5f9;
-  margin-top: 24px; padding: 16px;
+  background: #3b82f6;
+  margin-top: 12px;
+  padding: 16px;
   border: none; border-radius: 16px;
-  color: #334155; width: 100%;
+  color: #ffffff; width: 100%;
   cursor: pointer; font-weight: 600; font-size: 15px;
   transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
-.close-btn:hover { background: #e2e8f0; color: #0f172a; }
+.close-btn:hover { background: #2563eb; }
 
 /* Welcome Specifics */
-.welcome-box h3 { color: #0f172a; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
-.welcome-box p { font-size: 15px; color: #475569; margin-bottom: 28px; line-height: 1.6; }
-.welcome-box b { color: #0f172a; }
+.welcome-box h3 { color: #ffffff; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.welcome-box p { font-size: 14px; color: #94a3b8; margin-bottom: 28px; line-height: 1.6; }
+.welcome-box b { color: #e2e8f0; }
 
 .close-popup-btn {
-  width: 100%; background: #0f172a; color: #ffffff;
+  width: 100%; background: #3b82f6; color: #ffffff;
   border: none; border-radius: 16px; padding: 16px;
   cursor: pointer; font-weight: 600; font-size: 15px;
   transition: all 0.2s ease;
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
 }
-.close-popup-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(15, 23, 42, 0.3); }
+.close-popup-btn:hover { background: #2563eb; transform: translateY(-2px); }
 
 /* --- CONTENT CONTAINER & IFRAME --- */
 #content-container {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   z-index: 1000;
-  background: #ffffff;
+  background: #0f172a;
   display: none;
 }
 
@@ -296,7 +345,7 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   z-index: 1001;
   box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
   transition: all 0.3s ease;
-  display: none; /* Hidden by default */
+  display: none; 
 }
 
 #floatingLogoutBtn:hover {
@@ -318,7 +367,15 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
     </svg>
   </button>
 
-  <h2>Panel Login</h2>
+  <div class="panel-icon">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+    </svg>
+  </div>
+  
+  <h2>System Access</h2>
+  <div class="sub-text">Please authenticate to continue</div>
   
   <input type="text" id="key" placeholder="Enter Access Key" autocomplete="off">
   
@@ -344,32 +401,31 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
     <div class="info-row"><span>Developer</span><b>Gaurav</b></div>
     <div class="info-row"><span>Status</span><b>Secure</b></div>
     
+    <button class="admin-link-btn" onclick="openAdmin()">Admin Panel</button>
+    
     <button class="close-btn" onclick="closePopup('aboutMenu')">Close</button>
   </div>
 </div>
 
 <div class="popup-overlay" id="welcomePopup">
-  <div class="popup-box">
+  <div class="popup-box welcome-box">
     <h3>Welcome</h3>
-    <p>Welcome to the official <b>gauravyt_ app</b>. This is the real app by Gaurav, trusted by <b>60K+ Instagram followers</b>.</p>
+    <p>Welcome to the official application of <b>gauravyt_</b>.<br><br>This platform is the authentic digital space managed by Gaurav, created to provide trusted updates, resources, and official information. With the support of <b>60K+ Instagram followers</b>, this app represents the verified presence of the gauravyt community.</p>
     <button class="close-popup-btn" onclick="closePopup('welcomePopup')">Continue</button>
   </div>
 </div>
 
 <div id="content-container">
-  </div>
+</div>
 <button id="floatingLogoutBtn" onclick="logout()">Logout</button>
 
 <script>
-// State management variable
 let isPanelOpen = false;
 
-// Agar reload hone pe URL mein #panel ho, toh clean kardo
 if(window.location.hash === '#panel') {
     history.replaceState(null, null, window.location.pathname);
 }
 
-// --- POPUP MANAGEMENT ---
 function openPopup(id) {
   const el = document.getElementById(id);
   el.style.display = "flex";
@@ -382,10 +438,8 @@ function closePopup(id) {
   setTimeout(() => el.style.display = "none", 300);
 }
 
-// Show welcome on load
 window.onload = () => openPopup('welcomePopup');
 
-// --- ENTER KEY SUPPORT ---
 document.getElementById('key').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -393,7 +447,6 @@ document.getElementById('key').addEventListener('keypress', function (e) {
   }
 });
 
-// --- CORE LOGIN LOGIC ---
 function login() {
   const keyInput = document.getElementById("key");
   const key = keyInput.value.trim();
@@ -415,10 +468,7 @@ function login() {
       loginBtn.classList.add("success");
       
       setTimeout(() => {
-        // Hide Login Panel
         document.getElementById("loginPanel").style.display = "none"; 
-        
-        // Show Container and dynamically create iframe
         const container = document.getElementById("content-container");
         container.style.display = "block"; 
         
@@ -429,10 +479,7 @@ function login() {
             container.appendChild(iframe);
         }
         
-        // Show Logout Button
         document.getElementById("floatingLogoutBtn").style.display = "block"; 
-        
-        // Set state for Back Button logic
         isPanelOpen = true;
         if(window.location.hash !== '#panel') {
             history.pushState({ page: 'panel' }, 'Panel', '#panel');
@@ -445,6 +492,29 @@ function login() {
   .catch(err => {
     resetButton(loginBtn, errorText, "Network connection error.");
   });
+}
+
+function openAdmin() {
+  closePopup('aboutMenu');
+  document.getElementById("loginPanel").style.display = "none";
+  
+  const container = document.getElementById("content-container");
+  container.style.display = "block";
+  
+  if (!document.getElementById("appIframe")) {
+      const iframe = document.createElement("iframe");
+      iframe.id = "appIframe";
+      container.appendChild(iframe);
+  }
+  
+  document.getElementById("appIframe").src = "https://gauravyt-admin--gaurav001op.replit.app/admin";
+  
+  document.getElementById("floatingLogoutBtn").style.display = "block";
+  isPanelOpen = true;
+  
+  if(window.location.hash !== '#panel') {
+      history.pushState({ page: 'panel' }, 'Panel', '#panel');
+  }
 }
 
 function resetButton(btn, errorEl, msg) {
@@ -460,17 +530,13 @@ function resetButton(btn, errorEl, msg) {
   setTimeout(() => box.style.transform = "translateX(0)", 300);
 }
 
-// --- SECURE LOGOUT LOGIC ---
 function logout() {
   isPanelOpen = false;
-  // Clean page reload to ensure no history/cache glitches remain
   window.location.replace(window.location.pathname);
 }
 
-// --- DEVICE BACK BUTTON EVENT FIX ---
 window.addEventListener('popstate', function(event) {
   if (isPanelOpen) {
-     // If user presses physical back button, safely log out instead of white screen
      if (window.location.hash !== '#panel') {
          logout(); 
      }
