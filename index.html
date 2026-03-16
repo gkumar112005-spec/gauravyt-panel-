@@ -270,7 +270,6 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
 .info-row span { color: #94a3b8; }
 .info-row b { color: #f8fafc; font-weight: 600; }
 
-/* Hidden Admin Button */
 .admin-link-btn {
   display: block;
   width: 100%;
@@ -286,10 +285,7 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   transition: all 0.2s ease;
 }
 
-.admin-link-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
+.admin-link-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
 .close-btn {
   background: #3b82f6;
@@ -312,28 +308,102 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   display: none;
 }
 
-#floatingLogoutBtn {
+/* --- FLOATING ACTIONS CONTAINER (JOINED BUTTONS) --- */
+#floatingActions {
   position: fixed;
   bottom: 24px;
-  right: 24px;
-  padding: 12px 28px;
-  background: #ef4444;
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  z-index: 1001;
-  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
-  transition: all 0.3s ease;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
   display: none; 
+  /* Gap hata diya hai yaha se */
+  z-index: 1001;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
+.action-btn {
+  flex: 1; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #ffffff;
+}
+
+#chatAdminBtn {
+  background: #3b82f6;
+  border-radius: 16px 0 0 16px; /* Sirf left side gol */
+}
+#chatAdminBtn:hover {
+  background: #2563eb;
+}
+
+#floatingLogoutBtn {
+  background: #ef4444;
+  border-radius: 0 16px 16px 0; /* Sirf right side gol */
+}
 #floatingLogoutBtn:hover {
   background: #dc2626;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* --- NEW FULL SCREEN CHAT --- */
+#chatFullScreen {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #0f172a;
+  z-index: 9999;
+  flex-direction: column;
+  animation: slideUpChat 0.3s ease-out;
+}
+
+@keyframes slideUpChat {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.chat-header {
+  padding: 16px 20px;
+  background: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.chat-header h3 {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-close-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-close-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
 }
 </style>
 </head>
@@ -417,8 +487,36 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
   </div>
 </div>
 
+<div id="chatFullScreen">
+  <div class="chat-header">
+    <h3>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+      Admin Support
+    </h3>
+    <button class="chat-close-btn" onclick="closeChatScreen()">Close</button>
+  </div>
+  <iframe id="chatIframe" style="flex: 1; width: 100%; border: none; background: #ffffff;"></iframe>
+</div>
+
 <div id="content-container"></div>
-<button id="floatingLogoutBtn" onclick="logout()">Logout</button>
+
+<div id="floatingActions">
+  <button id="chatAdminBtn" class="action-btn" onclick="openChat()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    Chat
+  </button>
+  
+  <button id="floatingLogoutBtn" class="action-btn" onclick="logout()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+      <polyline points="16 17 21 12 16 7"></polyline>
+      <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+    Logout
+  </button>
+</div>
 
 <script>
 let isPanelOpen = false;
@@ -441,7 +539,6 @@ function closePopup(id) {
 
 window.onload = () => openPopup('welcomePopup');
 
-// Main key login enter support
 document.getElementById('key').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -449,7 +546,6 @@ document.getElementById('key').addEventListener('keypress', function (e) {
   }
 });
 
-// Admin password enter support
 document.getElementById('adminPass').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -465,7 +561,7 @@ function createIframeWithPermissions(containerId) {
       
       iframe.setAttribute("allow", "fullscreen; clipboard-read; clipboard-write; camera; microphone");
       iframe.style.width = "100%";
-      iframe.style.height = "100%";
+      iframe.style.height = "100%"; 
       iframe.style.border = "none";
       iframe.style.background = "#ffffff";
       
@@ -502,8 +598,10 @@ function login() {
         const iframe = createIframeWithPermissions("content-container");
         iframe.src = "https://gauravyt-admin--gaurav001op.replit.app//"; 
         
-        document.getElementById("floatingLogoutBtn").style.display = "block"; 
+        // Dono jude hue buttons dikhao
+        document.getElementById("floatingActions").style.display = "flex"; 
         isPanelOpen = true;
+        
         if(window.location.hash !== '#panel') {
             history.pushState({ page: 'panel' }, 'Panel', '#panel');
         }
@@ -517,10 +615,23 @@ function login() {
   });
 }
 
+// FULL SCREEN CHAT FUNCTIONS
+function openChat() {
+  const chatIframe = document.getElementById("chatIframe");
+  if (!chatIframe.src) {
+    chatIframe.src = "https://gauravytpanel.vercel.app/";
+  }
+  document.getElementById("chatFullScreen").style.display = "flex";
+}
+
+function closeChatScreen() {
+  document.getElementById("chatFullScreen").style.display = "none";
+}
+
 // Custom Admin UI Functions
 function openAdminPopup() {
   closePopup('aboutMenu');
-  document.getElementById('adminPass').value = ''; // Purana pass clear karne ke liye
+  document.getElementById('adminPass').value = ''; 
   document.getElementById('adminError').classList.remove('show');
   openPopup('adminLoginPopup');
 }
@@ -530,15 +641,12 @@ function verifyAdmin() {
   const errorText = document.getElementById('adminError');
   
   if (pass === "G") {
-    // Sahi password pe naye tab mein link khulegi aur popup band ho jayega
     window.open("https://gauravyt-admin--gaurav001op.replit.app/admin", "_blank");
     closePopup('adminLoginPopup');
   } else {
-    // Galat password pe error message aayega
     errorText.innerText = "Incorrect Password!";
     errorText.classList.add('show');
     
-    // Thoda sa shake effect
     const box = document.querySelector('#adminLoginPopup .popup-box');
     box.style.transform = "scale(1) translateX(-10px)";
     setTimeout(() => box.style.transform = "scale(1) translateX(10px)", 100);
