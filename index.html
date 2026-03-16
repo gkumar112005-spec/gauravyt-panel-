@@ -25,6 +25,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow: hidden; /* Extra scrollbars block karne ke liye */
 }
 
 /* --- MAIN PANEL (GLASSMORPHISM) --- */
@@ -311,13 +312,12 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
 /* --- FLOATING ACTIONS CONTAINER (JOINED BUTTONS) --- */
 #floatingActions {
   position: fixed;
-  bottom: 40px; /* <--- YAHAN CHANGE KIYA HAI: Halka sa upar (24px se 40px) */
+  bottom: 40px; 
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
   max-width: 400px;
   display: none; 
-  /* Gap hata diya hai yaha se */
   z-index: 1001;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
@@ -340,7 +340,7 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
 
 #chatAdminBtn {
   background: #3b82f6;
-  border-radius: 16px 0 0 16px; /* Sirf left side gol */
+  border-radius: 16px 0 0 16px; 
 }
 #chatAdminBtn:hover {
   background: #2563eb;
@@ -348,7 +348,7 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
 
 #floatingLogoutBtn {
   background: #ef4444;
-  border-radius: 0 16px 16px 0; /* Sirf right side gol */
+  border-radius: 0 16px 16px 0; 
 }
 #floatingLogoutBtn:hover {
   background: #dc2626;
@@ -495,7 +495,7 @@ button.login-btn.success .btn-success { opacity: 1; transform: translateY(0); di
     </h3>
     <button class="chat-close-btn" onclick="closeChatScreen()">Close</button>
   </div>
-  <iframe id="chatIframe" style="flex: 1; width: 100%; border: none; background: #ffffff;"></iframe>
+  <iframe id="chatIframe" style="flex: 1; width: 100%; border: none; background: #0f172a; display: block;"></iframe>
 </div>
 
 <div id="content-container"></div>
@@ -563,7 +563,8 @@ function createIframeWithPermissions(containerId) {
       iframe.style.width = "100%";
       iframe.style.height = "100%"; 
       iframe.style.border = "none";
-      iframe.style.background = "#ffffff";
+      iframe.style.background = "#0f172a";
+      iframe.style.display = "block";
       
       container.appendChild(iframe);
   }
