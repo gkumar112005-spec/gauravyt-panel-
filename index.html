@@ -25,7 +25,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow: hidden; /* Extra scrollbars block karne ke liye */
+  overflow: hidden; 
 }
 
 /* --- MAIN PANEL (GLASSMORPHISM) --- */
@@ -599,7 +599,6 @@ function login() {
         const iframe = createIframeWithPermissions("content-container");
         iframe.src = "https://gauravyt-admin--gaurav001op.replit.app//"; 
         
-        // Dono jude hue buttons dikhao
         document.getElementById("floatingActions").style.display = "flex"; 
         isPanelOpen = true;
         
@@ -667,6 +666,26 @@ function resetButton(btn, errorEl, msg) {
   setTimeout(() => box.style.transform = "translateX(10px)", 100);
   setTimeout(() => box.style.transform = "translateX(-10px)", 200);
   setTimeout(() => box.style.transform = "translateX(0)", 300);
+}
+
+// Yeh raha naya logout function 
+function logout() {
+  document.getElementById("content-container").style.display = "none";
+  document.getElementById("floatingActions").style.display = "none";
+  document.getElementById("loginPanel").style.display = "block";
+  
+  const appIframe = document.getElementById("appIframe");
+  if (appIframe) {
+    appIframe.src = ""; 
+  }
+  
+  const loginBtn = document.getElementById("loginBtn");
+  loginBtn.classList.remove("success", "loading");
+  loginBtn.disabled = false;
+  document.getElementById("key").value = "";
+  
+  isPanelOpen = false;
+  history.replaceState(null, null, window.location.pathname);
 }
 </script>
 </body>
