@@ -2,22 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Gauravyt Panel</title>
 
 <style>
-/* --- GLOBAL EXACT MATCH & OPTIMIZATIONS --- */
+/* --- GLOBAL EXACT MATCH & SMOOTH OPTIMIZATIONS --- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-  -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent; /* Removes mobile tap highlight */
+}
+
+/* Hide scrollbars for native app look */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body, html {
   height: 100%;
-  height: 100dvh; /* Fixes mobile browser navigation bar jump glitch */
+  height: 100dvh; /* Dynamic viewport for mobile browser UI jumps */
   width: 100vw;
   background: #0d121c; 
   color: #f8fafc;
@@ -34,7 +43,7 @@ body, html {
   margin: 0 auto;
   position: relative;
   background: #0f1523; 
-  box-shadow: 0 0 50px rgba(0,0,0,0.5);
+  box-shadow: 0 0 50px rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
 }
@@ -45,8 +54,9 @@ body, html {
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
-  padding-bottom: 80px; /* Space for bottom nav */
-  animation: fadeInSmooth 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow-x: hidden;
+  padding-bottom: calc(85px + env(safe-area-inset-bottom)); /* iOS safe area fix */
+  animation: fadeInSmooth 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .view-section.active {
@@ -54,13 +64,13 @@ body, html {
 }
 
 @keyframes fadeInSmooth {
-  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  from { opacity: 0; transform: translateY(15px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* --- TOP HEADERS --- */
 .header {
-  padding: 40px 20px 20px 20px;
+  padding: calc(40px + env(safe-area-inset-top)) 20px 20px 20px;
   text-align: center;
   font-size: 18px;
   font-weight: 600;
@@ -82,14 +92,26 @@ body, html {
 }
 .back-btn {
   background: none; border: none; color: #94a3b8; cursor: pointer;
-  display: flex; align-items: center; padding-right: 10px; transition: 0.2s;
+  display: flex; align-items: center; padding-right: 10px; transition: transform 0.2s;
 }
 .back-btn:active { transform: translateX(-4px); color: #fff; }
 
 /* --- MAIN LOGIN CARD (LEFT SCREEN) --- */
+.login-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* PERFECT CENTERING FIX */
+  width: 100%;
+  padding: 0 20px;
+  padding-bottom: 30px;
+}
+
 .login-card {
+  width: 100%;
+  max-width: 350px;
   background: #1b2333; 
-  margin: 20px;
   padding: 40px 25px;
   border-radius: 24px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.05);
@@ -118,7 +140,7 @@ body, html {
   letter-spacing: 0.5px;
 }
 
-/* Inputs - FIXED ZOOM GLITCH */
+/* Inputs */
 .input-wrapper {
   position: relative;
   width: 100%;
@@ -127,18 +149,18 @@ body, html {
 
 input {
   width: 100%;
-  padding: 15px 45px 15px 20px; 
+  padding: 16px 45px 16px 20px; 
   background: #101622;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   color: #fff;
-  font-size: 16px; /* CRITICAL FIX: 16px prevents iOS auto-zoom glitch */
+  font-size: 16px; /* iOS zoom fix */
   outline: none;
   transition: all 0.3s ease;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 input::placeholder { color: #64748b; font-size: 14px; }
-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), inset 0 2px 4px rgba(0,0,0,0.2); }
+input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), inset 0 2px 4px rgba(0,0,0,0.2); }
 
 .input-icon-right, .input-icon-left {
   position: absolute;
@@ -166,9 +188,10 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
   justify-content: center;
   gap: 8px;
   box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth bounce */
+  user-select: none;
 }
-.btn-primary:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4); }
+.btn-primary:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4); }
 
 /* Spinners & Success states */
 .spinner-circle {
@@ -184,13 +207,12 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
 .success { background: #10b981 !important; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3) !important; }
 
 /* --- ABOUT SCREEN (RIGHT SCREEN) --- */
-/* Profile Image Update */
 .profile-img {
   width: 85px; 
   height: 85px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 10px auto 20px auto;
+  margin: 10px auto 25px auto;
   display: block;
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
@@ -227,51 +249,39 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
 }
 .admin-card-title svg { color: #eab308; }
 
-/* Updated Footer Info */
-.footer-info {
-  margin: 10px 25px;
-}
+.footer-info { margin: 10px 25px; }
 .footer-info a {
-  display: flex;
-  align-items: center;
-  color: #94a3b8;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.2s ease;
-  padding: 8px 0; /* Easier to tap on mobile */
+  display: flex; align-items: center; color: #94a3b8;
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  transition: 0.2s ease; padding: 10px 0;
 }
 .footer-info a:hover, .footer-info a:active { color: #3b82f6; }
 .footer-info a svg { margin-right: 8px; width: 18px; }
-
-/* Highlight for gauravyt_ */
-.highlight-blue {
-  color: #3b82f6;
-  margin-left: 4px;
-}
+.highlight-blue { color: #3b82f6; margin-left: 4px; }
 
 /* --- BOTTOM NAVIGATION --- */
 .bottom-nav {
   position: absolute;
   bottom: 0; width: 100%;
-  height: 65px;
-  background: rgba(21, 27, 40, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  height: calc(65px + env(safe-area-inset-bottom)); /* iOS Safe Area Fix */
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(15, 21, 35, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.08);
   z-index: 50;
 }
 .nav-item {
-  display: flex; flex-direction: column; align-items: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: #64748b; font-size: 11px; font-weight: 600;
   cursor: pointer; padding: 10px 20px; position: relative;
-  transition: color 0.3s;
+  transition: color 0.3s; height: 100%; user-select: none;
 }
-.nav-item svg { margin-bottom: 4px; transition: transform 0.2s; }
-.nav-item:active svg { transform: scale(0.9); }
+.nav-item svg { margin-bottom: 4px; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); }
+.nav-item:active svg { transform: scale(0.85); }
 .nav-item.active { color: #3b82f6; }
 .nav-item.active::before {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
@@ -285,30 +295,31 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
 /* Content container (iFrames) */
 #content-container {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  height: 100dvh;
-  background: #0d121c; z-index: 1000; display: none;
+  height: 100dvh; background: #0d121c; z-index: 1000; display: none;
 }
 
 /* Floating Actions */
 #floatingActions {
-  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  position: fixed; 
+  bottom: calc(30px + env(safe-area-inset-bottom)); 
+  left: 50%; transform: translateX(-50%);
   width: 90%; max-width: 400px; display: none; z-index: 1001;
-  background: rgba(27, 35, 51, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: rgba(27, 35, 51, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
   border-radius: 16px; padding: 5px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
-  animation: slideUpFade 0.4s ease-out;
+  animation: slideUpFade 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 @keyframes slideUpFade {
-  from { opacity: 0; transform: translate(-50%, 20px); }
+  from { opacity: 0; transform: translate(-50%, 30px); }
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 .action-btn {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 10px; border: none; background: transparent; color: #94a3b8; font-size: 12px; cursor: pointer;
-  border-radius: 12px; transition: background 0.2s, color 0.2s;
+  padding: 12px 10px; border: none; background: transparent; color: #94a3b8; font-size: 12px; cursor: pointer;
+  border-radius: 12px; transition: all 0.2s; user-select: none;
 }
-.action-btn:active { background: rgba(255,255,255,0.05); }
+.action-btn:active { background: rgba(255,255,255,0.08); transform: scale(0.96); }
 .action-btn:hover { color: #fff; }
 
 /* Fixed Chat Full Screen */
@@ -317,7 +328,7 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
   position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: 100dvh;
   background: #0d121c; z-index: 9999;
   flex-direction: column;
-  animation: slideUpChat 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUpChat 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @keyframes slideUpChat {
@@ -326,7 +337,8 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
 }
 
 .chat-header {
-  padding: 15px 20px; background: #1b2333; display: flex; justify-content: space-between; align-items: center;
+  padding: calc(15px + env(safe-area-inset-top)) 20px 15px 20px; 
+  background: #1b2333; display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 2;
 }
 .chat-close-btn { 
@@ -336,7 +348,6 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
 }
 .chat-close-btn:active { background: #ef4444; color: #fff; transform: scale(0.95); }
 
-/* Remove iframe white flash */
 iframe { color-scheme: dark; }
 </style>
 </head>
@@ -350,7 +361,7 @@ iframe { color-scheme: dark; }
       <span class="header-gold">Gauravyt</span> <span class="header-white">Panel</span>
     </div>
     
-    <div style="flex: 1; display: flex; align-items: center; padding-bottom: 50px;">
+    <div class="login-wrapper">
       <div class="login-card">
         <div class="icon-box">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -361,7 +372,7 @@ iframe { color-scheme: dark; }
         <h2>PANEL ACCESS</h2>
         
         <div class="input-wrapper">
-          <input type="text" id="key" placeholder="Enter Logic Key" autocomplete="off">
+          <input type="text" id="key" placeholder="Enter Logic Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
           <svg class="input-icon-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5"></path></svg>
         </div>
         
@@ -377,7 +388,7 @@ iframe { color-scheme: dark; }
   </div>
 
   <div id="aboutView" class="view-section">
-    <div class="header header-about" style="margin-top: 30px;">
+    <div class="header header-about" style="margin-top: 10px;">
       <button class="back-btn" onclick="switchView('login')">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
       </button>
@@ -415,7 +426,7 @@ iframe { color-scheme: dark; }
       
       <div class="input-wrapper has-left-icon">
         <svg class="input-icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        <input type="password" id="adminPass" placeholder="Password" autocomplete="off">
+        <input type="password" id="adminPass" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         <svg class="input-icon-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"></path></svg>
       </div>
       
@@ -473,14 +484,13 @@ iframe { color-scheme: dark; }
 </div>
 
 <script>
-// Logic Optimization & Bug Fixes
 let isPanelOpen = false;
 
 if(window.location.hash === '#panel') {
     history.replaceState(null, null, window.location.pathname);
 }
 
-// Fixed Switch View (using classes for smooth animation)
+// Smooth Tab Switcher
 function switchView(view) {
   const loginView = document.getElementById('loginView');
   const aboutView = document.getElementById('aboutView');
@@ -599,7 +609,6 @@ function resetButton(btn, errorEl, msg) {
   setTimeout(() => box.style.transform = "translateX(0)", 300);
 }
 
-// Smooth Chat Open/Close
 function openChat() {
   const chatIframe = document.getElementById("chatIframe");
   if (!chatIframe.src) {
