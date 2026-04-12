@@ -102,7 +102,7 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* PERFECT CENTERING FIX */
+  justify-content: center; 
   width: 100%;
   padding: 0 20px;
   padding-bottom: 30px;
@@ -154,7 +154,7 @@ input {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   color: #fff;
-  font-size: 16px; /* iOS zoom fix */
+  font-size: 16px; 
   outline: none;
   transition: all 0.3s ease;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
@@ -188,7 +188,7 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
   justify-content: center;
   gap: 8px;
   box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth bounce */
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); 
   user-select: none;
 }
 .btn-primary:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4); }
@@ -263,7 +263,7 @@ input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.
 .bottom-nav {
   position: absolute;
   bottom: 0; width: 100%;
-  height: calc(65px + env(safe-area-inset-bottom)); /* iOS Safe Area Fix */
+  height: calc(65px + env(safe-area-inset-bottom)); 
   padding-bottom: env(safe-area-inset-bottom);
   background: rgba(15, 21, 35, 0.85);
   backdrop-filter: blur(20px);
@@ -567,7 +567,7 @@ function login() {
         container.style.display = "block"; 
         
         const iframe = createIframeWithPermissions("content-container");
-        iframe.src = "https://gauravyt-admin--gaurav001op.replit.app//"; 
+        iframe.src = "https://gauravyt-admin--gaurav001op.replit.app/"; 
         
         document.getElementById("floatingActions").style.display = "flex"; 
         isPanelOpen = true;
@@ -619,13 +619,18 @@ function resetButton(btn, errorEl, msg) {
   setTimeout(() => box.style.transform = "translateX(0)", 300);
 }
 
-// --- UPDATED DYNAMIC OPEN FUNCTIONS ---
+// --- TAWK.TO DYNAMIC CHAT TRIGGER ---
 
 function openChat() {
-  const chatIframe = document.getElementById("chatIframe");
-  document.getElementById("modalTitle").innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> Support';
-  chatIframe.src = "https://0bviyvuh.forms.app/guardianship-application-form";
-  document.getElementById("chatFullScreen").style.display = "flex";
+  if (typeof Tawk_API !== 'undefined') {
+    Tawk_API.showWidget();
+    // Chota sa delay diya hai taaki chat smoothly badi (maximize) ho jaye
+    setTimeout(function() {
+      Tawk_API.maximize(); 
+    }, 50);
+  } else {
+    console.error("Tawk.to API is not loaded yet.");
+  }
 }
 
 function openProof() {
@@ -664,6 +669,35 @@ function logout() {
   if(window.location.hash === '#panel') history.replaceState(null, null, window.location.pathname);
   document.getElementById("content-container").innerHTML = '';
 }
+</script>
+
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+// TRICK: Ye code default bubble ko load hone se pehle hi screen ke bahar fek dega, isliye 0 flash dikhega!
+Tawk_API.customStyle = {
+    visibility: {
+        desktop: { xOffset: '-9999px', yOffset: '-9999px' },
+        mobile: { xOffset: '-9999px', yOffset: '-9999px' }
+    }
+};
+
+Tawk_API.onLoad = function(){
+    Tawk_API.hideWidget();
+};
+
+Tawk_API.onChatMinimized = function(){
+    Tawk_API.hideWidget();
+};
+
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69db46ba41b0381c3a2f9eef/1jm08oiit';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
 </script>
 </body>
 </html>
