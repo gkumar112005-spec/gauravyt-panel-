@@ -458,7 +458,7 @@ iframe { color-scheme: dark; }
 <div id="content-container"></div>
 
 <div id="floatingActions" style="display: none; justify-content: space-around;">
-  <button class="action-btn" onclick="openChat()">
+  <button class="action-btn" onclick="openRequestPanel()">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14h6"></path><path d="M9 10h6"></path><path d="M9 18h6"></path></svg>
     Request
   </button>
@@ -538,12 +538,11 @@ function createIframeWithPermissions(containerId) {
   return document.getElementById("appIframe");
 }
 
-// 🔥 DYNAMICALLY LOAD TAWK.TO SCRIPT 
+// 🔥 TAWK.TO SETUP
 function initTawkTo() {
   window.Tawk_API = window.Tawk_API || {};
   window.Tawk_LoadStart = new Date();
   
-  // 🔥 Upar shift kiya 140px par
   window.Tawk_API.customStyle = {
       visibility: {
           desktop: { position: 'bl', xOffset: '15px', yOffset: '140px' },
@@ -551,7 +550,6 @@ function initTawkTo() {
       }
   };
 
-  // Inject Script manually
   var s1 = document.createElement("script");
   s1.async = true;
   s1.src = 'https://embed.tawk.to/69db46ba41b0381c3a2f9eef/1jm08oiit';
@@ -593,11 +591,11 @@ function login() {
         document.getElementById("floatingActions").style.display = "flex"; 
         isPanelOpen = true;
         
-        // 🔥 SIRF LOGIN SUCCESS HONE PAR SCRIPT LOAD KAREGA
+        // 🔥 Script load karna
         if (!tawkLoaded) {
             initTawkTo(); 
-        } else if (typeof Tawk_API !== "undefined") {
-            Tawk_API.showWidget(); 
+        } else if (typeof window.Tawk_API !== "undefined" && typeof window.Tawk_API.showWidget === "function") {
+            window.Tawk_API.showWidget(); 
         }
         
         if(window.location.hash !== '#panel') {
@@ -647,12 +645,12 @@ function resetButton(btn, errorEl, msg) {
   setTimeout(() => box.style.transform = "translateX(0)", 300);
 }
 
-// --- UPDATED TAWK.TO REQUEST BUTTON ---
-function openChat() {
-  if (typeof Tawk_API !== "undefined") {
-    Tawk_API.showWidget();
-    Tawk_API.maximize();
-  }
+// --- 🔥 FIX: WAPAS THEEK KIYA REQUEST PANEL FUNCTION ---
+function openRequestPanel() {
+  const chatIframe = document.getElementById("chatIframe");
+  document.getElementById("modalTitle").innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14h6"></path><path d="M9 10h6"></path><path d="M9 18h6"></path></svg> Request Panel';
+  chatIframe.src = "https://req-order.vercel.app/";
+  document.getElementById("chatFullScreen").style.display = "flex";
 }
 
 function openProof() {
@@ -679,9 +677,8 @@ function logout() {
   document.getElementById('floatingActions').style.display = 'none';
   document.getElementById('mainApp').style.display = 'flex';
   
-  // 🔥 LOGOUT PAR WIDGET GAYAB
-  if (typeof Tawk_API !== "undefined" && typeof Tawk_API.hideWidget === "function") {
-      Tawk_API.hideWidget();
+  if (typeof window.Tawk_API !== "undefined" && typeof window.Tawk_API.hideWidget === "function") {
+      window.Tawk_API.hideWidget();
   }
   
   document.getElementById('key').value = '';
