@@ -591,7 +591,6 @@ function login() {
         document.getElementById("floatingActions").style.display = "flex"; 
         isPanelOpen = true;
         
-        // 🔥 Script load karna
         if (!tawkLoaded) {
             initTawkTo(); 
         } else if (typeof window.Tawk_API !== "undefined" && typeof window.Tawk_API.showWidget === "function") {
@@ -645,8 +644,9 @@ function resetButton(btn, errorEl, msg) {
   setTimeout(() => box.style.transform = "translateX(0)", 300);
 }
 
-// --- 🔥 FIX: WAPAS THEEK KIYA REQUEST PANEL FUNCTION ---
+// --- 🔥 LOGIC UPDATED: Opening Panels Hides Tawk.to ---
 function openRequestPanel() {
+  if (window.Tawk_API && typeof Tawk_API.hideWidget === 'function') Tawk_API.hideWidget();
   const chatIframe = document.getElementById("chatIframe");
   document.getElementById("modalTitle").innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14h6"></path><path d="M9 10h6"></path><path d="M9 18h6"></path></svg> Request Panel';
   chatIframe.src = "https://req-order.vercel.app/";
@@ -654,6 +654,7 @@ function openRequestPanel() {
 }
 
 function openProof() {
+  if (window.Tawk_API && typeof Tawk_API.hideWidget === 'function') Tawk_API.hideWidget();
   const chatIframe = document.getElementById("chatIframe");
   document.getElementById("modalTitle").innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Proof Panel';
   chatIframe.src = "https://proof-screenshot.vercel.app/";
@@ -661,15 +662,18 @@ function openProof() {
 }
 
 function openOffers() {
+  if (window.Tawk_API && typeof Tawk_API.hideWidget === 'function') Tawk_API.hideWidget();
   const chatIframe = document.getElementById("chatIframe");
   document.getElementById("modalTitle").innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> Exclusive Offers';
   chatIframe.src = "https://offers-six-gamma.vercel.app/";
   document.getElementById("chatFullScreen").style.display = "flex";
 }
 
+// 🔥 LOGIC UPDATED: Closing Panels Shows Tawk.to again
 function closeChatScreen() { 
   document.getElementById("chatFullScreen").style.display = "none"; 
   document.getElementById("chatIframe").src = "";
+  if (window.Tawk_API && typeof Tawk_API.showWidget === 'function') Tawk_API.showWidget();
 }
 
 function logout() {
